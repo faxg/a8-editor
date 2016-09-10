@@ -1,1 +1,1 @@
-===Amalgam-8 Visualizer ===
+#Amalgam-8 Visualizer

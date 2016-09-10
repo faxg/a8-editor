@@ -1,0 +1,26 @@
+
+<pre id="editor">{
+    "services" : [
+        { "name": "gateway"},
+        { "name": "productpage:v1"},
+        { "name": "reviews:v2"},
+        { "name": "details:v1"},
+        { "name": "ratings:v1"}
+    ],
+
+    "dependencies" : {
+        "gateway" : ["productpage:v1"],
+        "productpage:v1" : ["reviews:v2", "details:v1"],
+        "reviews:v2" : ["ratings:v1"]
+    }
+}
+
+}</pre>
+
+<script src="/javascripts/ace.js" type="text/javascript" charset="utf-8"></script>
+<script>
+    var editor = ace.edit("editor");
+    editor.setTheme("ace/theme/github");
+    editor.session.setMode("ace/mode/json");
+</script>
+

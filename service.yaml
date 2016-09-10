@@ -1,0 +1,31 @@
+register: true
+proxy: true
+
+service:
+  name: a8-visualizer
+  tags: 
+    - v1
+    - admin
+
+endpoint:
+  host: 172.10.10.1
+  port: 9080
+  type: https
+
+registry:
+  url:   http://registry:8080
+  token: abcdef
+  poll:  10s
+
+controller:
+  url:   http://controller:6379
+  token: abcdef
+  poll:  30s
+
+supervise: true
+app: [ "python", "helloworld.py ]
+
+log: true
+logstash_server: logstash:8092
+
+log_level: debug

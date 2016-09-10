@@ -1,0 +1,11 @@
+{
+    "services": [
+        { "name": "gateway" },
+        { "name": "webui:v1" },
+        { "name": "topology-editor:v1" }
+    ],
+    "dependencies": {
+        "gateway": ["webui:v1"],
+        "webui:v1": ["topology-editor:v1"]
+    }
+}
