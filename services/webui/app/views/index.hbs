@@ -1,0 +1,29 @@
+ {{> navigation }}
+
+
+<div class="alert alert-danger alert-fixed" data-bind="visible: errorMessage">
+    <span id="errorMessage" data-bind="text: errorMessage"></span>
+    <button type="button" class="close" data-dismiss="alert">&times;</button>
+</div>
+
+
+
+
+<div class="row ">
+
+    <div class="col-md-6 ">
+
+
+        {{> recipeEditor }}
+
+    </div>
+    <div class="col-md-6">
+
+        {{> dependencyGraph }}
+
+
+    </div>
+    <!-- row -->
+</div>
+
+{{> footer}}

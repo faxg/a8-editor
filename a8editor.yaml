@@ -2,20 +2,43 @@
 webui:
   image: faxg/a8editor-webui
   environment:
+    - A8_LOG=true
+    - A8_REGISTER=true
+    - A8_PROXY=true
     - A8_REGISTRY_URL=http://registry:8080
-    - A8_REGISTRY_TOKEN=local
-    - A8_SERVICE=reviews:v2
+    - A8_SERVICE=webui:v1
     - A8_ENDPOINT_PORT=9080
-    - A8_TENANT_TOKEN=local
     - A8_LOGSTASH_SERVER='logstash:8092'
-    - A8_CONTROLLER_URL=http://controller:6379
+    - A8_CONTROLLER_URL=http://controller:8080
     - A8_CONTROLLER_POLL=5s
-    - A8_KAFKA_BROKER=kafka:9092
+    - A8_REGISTRY_POLL=5s
   external_links:
-    - kafka
     - logstash
     - controller
     - registry
   ports:
     - "3000:3000"
+    - "6379:6379"
   container_name: webui
+
+
+topologyservice:
+  image: faxg/a8editor-topologyservice
+  environment:
+    - A8_LOG=true
+    - A8_REGISTER=true
+    - A8_PROXY=true
+    - A8_REGISTRY_URL=http://registry:8080
+    - A8_SERVICE=topologyservice:v1
+    - A8_ENDPOINT_PORT=9080
+    - A8_LOGSTASH_SERVER='logstash:8092'
+    - A8_CONTROLLER_URL=http://controller:8080
+    - A8_CONTROLLER_POLL=5s
+    - A8_REGISTRY_POLL=5s
+  external_links:
+    - logstash
+    - controller
+    - registry
+  ports:
+    - "3100:3000"
+  container_name: topologyservice
