@@ -1,4 +1,44 @@
-## Amalgam8 editor ##
+## Amalgam8 editor
+## 
+## default topology:
+## ------------------------------------
+## Tenant Space <service>:<version>:<port> (as brought up)
+##              
+##          gateway:latest:32000 -> webui:v1:7000(sidecar on :6379) -> topologyservice:v1:7100
+##
+## ------------------------------------
+## A8 Control Plane (expected)
+##
+##          controller:8080       registry:8080     logstash:8092
+##
+##
+## 
+##
+##
+##
+##
+##
+##
+
+gateway:
+  image: amalgam8/a8-sidecar:alpine
+  environment:
+    - A8_CONTROLLER_URL=http://controller:8080
+    - A8_REGISTRY_URL=http://registry:8080
+    - A8_PROXY=true
+    - A8_LOG=true
+    - A8_SERVICE=gateway
+    - A8_LOGSTASH_SERVER='logstash:8092'
+    - A8_CONTROLLER_POLL=5s
+    - A8_REGISTRY_POLL=5s
+  ports:
+    - "32000:6379"
+  external_links:
+    - logstash
+    - controller
+    - registry
+  container_name: gateway
+
 webui:
   image: faxg/a8editor-webui
   environment:
@@ -17,7 +57,7 @@ webui:
     - controller
     - registry
   ports:
-    - "3000:3000"
+    - "7000:3000"
     - "6379:6379"
   container_name: webui
 
@@ -40,5 +80,5 @@ topologyservice:
     - controller
     - registry
   ports:
-    - "3100:3000"
+    - "7100:3000"
   container_name: topologyservice
