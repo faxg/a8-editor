@@ -24,7 +24,7 @@
 
     var line = d3.svg.line.radial()
         .interpolate("bundle")
-        .tension(.85)
+        .tension(.65)
         .radius(function(d) {
             return d.y;
         })
@@ -32,9 +32,12 @@
             return d.x / 180 * Math.PI;
         });
 
-    var svg = d3.select("#dependencyGraph").append("svg")
-        .attr("width", diameter)
+    var svg = d3.select("#dependencyGraph")
+        .append("svg")
+        .attr("width", diameter) // todo 100%
         .attr("height", diameter)
+        .attr("viewBox","0 0 "+diameter+ " " + diameter) // for responsive resizes
+        .attr("preserveAspectRatio","xMidYMid meet") // for responsive resizes
         .append("g")
         .attr("transform", "translate(" + radius + "," + radius + ")");
 

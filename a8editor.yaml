@@ -4,7 +4,7 @@
 ## ------------------------------------
 ## Tenant Space <service>:<version>:<port> (as brought up)
 ##              
-##          gateway:latest:32000 -> webui:v1:7000(sidecar on :6379) -> topologyservice:v1:7100
+##          gateway:latest:32700 -> webui:v1:7000(sidecar on :6379) -> topologyservice:v1:7100
 ##
 ## ------------------------------------
 ## A8 Control Plane (expected)
@@ -32,15 +32,15 @@ gateway:
     - A8_CONTROLLER_POLL=5s
     - A8_REGISTRY_POLL=5s
   ports:
-    - "32000:6379"
+    - "32700:6379"
   external_links:
     - logstash
     - controller
     - registry
-  container_name: gateway
+  container_name: a8editor_gateway
 
 webui:
-  image: faxg/a8editor-webui
+  image: faxg/a8editor-webui:v1
   environment:
     - A8_LOG=true
     - A8_REGISTER=true
@@ -63,7 +63,7 @@ webui:
 
 
 topologyservice:
-  image: faxg/a8editor-topologyservice
+  image: faxg/a8editor-topologyservice:v1
   environment:
     - A8_LOG=true
     - A8_REGISTER=true

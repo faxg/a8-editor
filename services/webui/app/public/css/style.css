@@ -11,6 +11,10 @@ body {
     margin-bottom: 60px;
 }
 
+pre {
+    white-space: pre-wrap;
+}
+
 .alert-fixed {
     position: fixed;
     top: 0px;
