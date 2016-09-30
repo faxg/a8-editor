@@ -1,7 +1,0 @@
-[
-    { "name": "gateway", "imports": ["productpage:v1"] },
-    { "name": "productpage:v1", "imports": ["reviews:v2", "details:v1"] },
-    { "name": "details:v1", "imports": [] },
-    { "name": "ratings:v1", "imports": [] },
-    { "name": "reviews:v2", "imports": ["ratings:v1"] }
-]

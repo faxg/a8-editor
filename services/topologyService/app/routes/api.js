@@ -5,14 +5,7 @@ var _ = require('underscore');
 
 var router = express.Router();
 
-/** Example dependency ViewModel */
-const EXAMPLE_VIEWMODEL = [
-    { "name": "gateway", "imports": ["productpage:v1"] },
-    { "name": "productpage:v1", "imports": ["reviews:v2", "details:v1"] },
-    { "name": "details:v1", "imports": [] },
-    { "name": "ratings:v1", "imports": [] },
-    { "name": "reviews:v2", "imports": ["ratings:v1"] }
-]
+
 
 /**
  * This converts the topology JSON data from A8 into the viemodel json format used by D3 
