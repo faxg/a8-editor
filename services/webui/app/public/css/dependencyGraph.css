@@ -5,7 +5,7 @@
 
 .node:hover {
     fill: #fff;
-    cursor: crosshair;
+    cursor: none;
 }
 
 .link {

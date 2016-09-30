@@ -13,6 +13,7 @@ body {
 
 pre {
     white-space: pre-wrap;
+    height: 100%;
 }
 
 .alert-fixed {
