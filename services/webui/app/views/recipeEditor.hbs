@@ -110,7 +110,7 @@
         self.cmdLine = ko.computed(function() {
             return "a8ctl recipe-run --topology " + self.sanitizedName() + ".topology.json " +
                 "--scenarios " + self.sanitizedName() + ".gremlins.json " +
-                "--checks " + self.sanitizedName() + ".checklist.json " +
+                "--checks " + self.sanitizedName() + ".checks.json " +
                 "--header 'Cookie' " +
                 "--pattern='user=jason' ";
         });
@@ -126,9 +126,11 @@
         self.generateAndDownload = function() {
             var zip = new JSZip();
             zip.file(self.sanitizedName() + ".topology.json", self.srcTopology());
-            zip.file(self.sanitizedName() + ".checklist.json", self.srcChecks());
+            zip.file(self.sanitizedName() + ".checks.json", self.srcChecks());
             zip.file(self.sanitizedName() + ".gremlins.json", self.srcGremlins());
-            zip.file("start-recipe-" + self.sanitizedName() + ".sh", "#!/bin/sh\n#" + self.description() + "\n" + + self.cmdLine(),  {"unixPermissions": 0755});
+            zip.file("start-recipe-" + self.sanitizedName() + ".sh", "#!/bin/sh\n#" + self.description() + "\n" + +self.cmdLine(), {
+                "unixPermissions": 0755
+            });
 
             zip.generateAsync({
                     type: "blob"
@@ -166,10 +168,11 @@
         editor.setTheme("ace/theme/github");
         editor.setShowPrintMargin(false);
         editor.setHighlightActiveLine(true);
-        editor.resize();
         editor.setBehavioursEnabled(true);
         editor.$blockScrolling = Infinity;
         editor.session.getUndoManager().reset();
+        editor.resize();
+        setTimeout(editor.resize(), 2000);
     });
 
 
@@ -191,14 +194,7 @@
                 //console.log('Refreshing dependency visualization..', data);
                 $('#dependencyViewIFrame').attr('src', "{{ services.topologyService }}/dependencyView?data=" + data);
             }
-            //console.log(srcObj);
-            //TODO check basic validity client-side
 
-            //$.get ("{{ services.topologyService }}/dependencyView", {"data": data}, function (result){
-            //console.log (result);
-
-            //    $('#dependencyViewContainer').contents().find('html').html(result);
-            //})
         } catch (exception) {
             console.log(exception);
             // set error message
