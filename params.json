@@ -1,0 +1,6 @@
+{
+  "name": "A8-editor",
+  "tagline": "Web-based authoring environment for Amalgam8 / Gremlin artifacts",
+  "body": "### A8 Editor\r\n1. Web-based authoring tool for Amalgam8/Gremlin. \r\n2. A microservices application for demonstrating devOps practices using Amalgam8/Gremlin    \r\n\r\n### Why ?\r\nAmalgam8 and Gremlin provide a great platform for devOps practices such as A/B testing, (deterministic) resiliency testing, Canary Deployments etc. This project will aid in authoring some key artifacts, e.g. recipes, actions, routing rules etc. The environment will focus on basic validation and consistency checking, visualizations to help understand and design complex scenarios, service dependencies and actions. \r\n\r\nWe expect this project to be of a relatively moderate complexity and size, so probably it would work well as a (monolithic) web app. However, the secondary goal is to have demo-able application to showcase selected devOps practices using Amalgam8/Gremlin. So we build a microservices architecture, including collateral to run some - hopefully - enjoyable demo scenarios.\r\n\r\n\r\n### Authors and Contributors\r\nInitial contributions by @faxg and @rmey.\r\n \r\n### Contact\r\nCheck out our [documentation](https://help.github.com/pages).\r\n",
+  "note": "Don't delete this file! It's used internally to help with page regeneration."
+}
