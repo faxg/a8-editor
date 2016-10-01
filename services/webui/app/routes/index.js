@@ -25,7 +25,7 @@ router.get('/', function(req, res, next) {
         services: {
             'topologyService': topologyServiceEndpoint,
         },
-        projectHomepage: 'http://github.io/a8-editor'
+        projectHomepage: 'https://faxg.github.io/a8-editor/'
     })
 });
 
