@@ -11,7 +11,7 @@ We expect this project to be of a relatively moderate complexity and size, so pr
  Server-side
  - [Node.js](https://nodejs.org/) 6.7.0 
  - [Express](http://expressjs.com/) 4.14.0
- - [Handlebars](http://handlebarsjs.com/) Templates 4.0.5 
+ - [Handlebars](http://handlebarsjs.com/) 4.0.5 
 
 Frontend
  - [Bootstrap](http://getbootstrap.com/) 3.3.7
@@ -26,6 +26,12 @@ Frontend
 ## Prerequisites
  - [Docker](https://www.docker.com/) 1.12.1
  - [Amalgam8](https://www.amalgam8.io/) 0.3.1
+For development
+ - Oracle Java *SDK* v1.8+
+ - [Chimp](https://github.com/xolvio/chimp) - runner for all types of tests. 
+ Chimp comes with support for [Cucumber](https://github.com/cucumber/cucumber-js) and [Mocha](https://mochajs.org/)
+ - [Chai](http://chaijs.com/) 
+
  
 
 
