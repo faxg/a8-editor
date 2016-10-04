@@ -38,3 +38,7 @@ pre {
     height: 500px;
     top: 0px;
 }
+
+.redColor {
+    background: #d9534f;
+}

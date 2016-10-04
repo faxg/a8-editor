@@ -56,15 +56,19 @@ router.get('/dependencyView', function(req, res, next) {
     res.setHeader('Content-Type', 'text/html');
 
     // IF ok
-    var viewModel = convertToViewModel(req.query.data);
-    if (viewModel) {
-        var VISUALIZATION_TEMPLATE = 'dependencyDiagram';
-        res.render(VISUALIZATION_TEMPLATE, {
-            title: 'DependencyDiagram',
-            viewModel: viewModel
-        });
+    if (!req.query.data) {
+        res.render('emptyRequest');
     } else {
-        res.render('validationError', { "input": req.query.data });
+        var viewModel = convertToViewModel(req.query.data);
+        if (viewModel) {
+            var VISUALIZATION_TEMPLATE = 'dependencyDiagram';
+            res.render(VISUALIZATION_TEMPLATE, {
+                title: 'DependencyDiagram',
+                viewModel: viewModel
+            });
+        } else {
+            res.render('validationError', { "input": req.query.data });
+        }
     }
 });
 
