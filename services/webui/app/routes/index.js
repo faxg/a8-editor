@@ -22,9 +22,7 @@ router.get('/', function(req, res, next) {
 
     res.render('index', {
         lastRendered: timestamp.format('HH:mm:ss.SSS (x)'),
-        services: {
-            'topologyService': topologyServiceEndpoint,
-        },
+        topologyServiceEndpoint: topologyServiceEndpoint,
         projectHomepage: 'https://faxg.github.io/a8-editor/'
     })
 });

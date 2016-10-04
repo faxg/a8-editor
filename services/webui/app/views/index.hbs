@@ -1,13 +1,6 @@
  {{> navigation }}
 
 
-<div class="alert alert-danger alert-fixed" data-bind="visible: errorMessage">
-    <span id="errorMessage" data-bind="text: errorMessage"></span>
-</div>
-
-
-
-
 <div class="row row-eq-height">
 
     <div class="col-md-6">
@@ -25,3 +18,16 @@
 </div>
 
 {{> footer}}
+
+
+
+<!-- Knockout.js ViewModel and page handler logic -->
+<script src="/js/scenarioEditor.js"></script>
+<script>
+    // materialize template properties and pass into ViewModel
+    var options = {
+            topologyServiceEndpoint: '{{ topologyServiceEndpoint }}'
+        };
+    var viewModel = new RecipeViewModel(options);
+    ko.applyBindings(viewModel);
+</script>
