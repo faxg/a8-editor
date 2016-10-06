@@ -37,7 +37,7 @@ gateway:
     - logstash
     - controller
     - registry
-  container_name: a8editor_gateway
+  container_name: gateway
 
 webui:
   image: faxg/a8editor-webui:v1

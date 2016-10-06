@@ -41,7 +41,11 @@ function RecipeViewModel(options) {
     // holds latest error message, e.g. parsing errors
     self.errorMessage = ko.observable("");
     // observables for ace editors / source code
-    self.srcTopology = ko.observable("");
+
+    // topology editor source - changes are throttled, because depended observables 
+    // will make REST calls to the backend 
+    self.srcTopology = ko.observable("")
+        .extend({ rateLimit: { timeout: 500, method: "notifyWhenChangesStop" } });
 
     // html fragment returned by topologyService#dependencyView API call.
     // does async request and DOM updates with JQuery
@@ -71,6 +75,7 @@ function RecipeViewModel(options) {
         }
         return "";
     };
+
 
     self.srcTopologyMessage = ko.computed(function() {
         return self.parseHelper(self.srcTopology());
