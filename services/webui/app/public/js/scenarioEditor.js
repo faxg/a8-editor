@@ -12,6 +12,13 @@ function RecipeViewModel(options) {
 
     // Name of the recipe
     self.name = ko.observable("My Recipe");
+    // short description.
+    self.description = ko.observable("");
+    // header field to use
+    self.header = ko.observable("Cookie");
+    // header field pattern (selektor)
+    self.pattern = ko.observable("group=QA");
+
     // santitized camel case version of name (for generating ids, filenames etc.)
     self.sanitizedName = ko.computed(function() {
         return self.name().toLowerCase()
@@ -30,38 +37,42 @@ function RecipeViewModel(options) {
 
     // computed command line for a8ctl
     self.cmdLine = ko.computed(function() {
-        return "a8ctl recipe-run --topology " + self.sanitizedName() + ".topology.json " +
-            "--scenarios " + self.sanitizedName() + ".gremlins.json " +
-            "--checks " + self.sanitizedName() + ".checks.json " +
-            "--header 'Cookie' " +
-            "--pattern='user=jason' ";
+        var name = self.sanitizedName();
+        var httpHeader = self.header();
+        var selector = self.pattern();
+
+        return `a8ctl recipe-run --topology ${name}.topology.json --scenarios ${name}.gremlins.json 
+                --checks ${name}.checks.json 
+                --header '${httpHeader}' 
+                --pattern='${selector}' `;
     });
-    // short description.
-    self.description = ko.observable("");
+
     // holds latest error message, e.g. parsing errors
     self.errorMessage = ko.observable("");
     // observables for ace editors / source code
 
     // topology editor source - changes are throttled, because depended observables 
-    // will make REST calls to the backend 
-    self.srcTopology = ko.observable("")
+    // will trigger REST calls to the backend 
+    self.srcTopology = ko.observable("{}")
         .extend({ rateLimit: { timeout: 500, method: "notifyWhenChangesStop" } });
+    self.srcGremlins = ko.observable("{}")
+        .extend({ rateLimit: { timeout: 500, method: "notifyWhenChangesStop" } });
+    self.srcChecks = ko.observable("{}")
+        .extend({ rateLimit: { timeout: 500, method: "notifyWhenChangesStop" } });;
 
     // html fragment returned by topologyService#dependencyView API call.
     // does async request and DOM updates with JQuery
     self.htmlTopology = ko.computed(function() {
-        var url = self.options['topologyServiceEndpoint'] +
-            "/dependencyView?data=" +
-            encodeURIComponent(self.srcTopology());
+        var apiRoot = self.options['topologyServiceEndpoint'];
+        var data = encodeURIComponent(self.srcTopology()); // wire data, urlencoded
 
-        console.log("GET", url);
+        var url = `${apiRoot}/dependencyView?data=${data}`;
 
-        // TODO make this clean without side effects ?
-        $('#dependencyViewContainer').load(url);
+        // Reload dependency view
+        $('#dependencyViewContainer').load(`${url}`);
     });
 
-    self.srcGremlins = ko.observable("");
-    self.srcChecks = ko.observable("");
+
 
     // parser/validation of JSON sources
     self.parseHelper = function(src) {

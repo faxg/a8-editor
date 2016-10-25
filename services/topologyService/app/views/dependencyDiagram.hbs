@@ -5,8 +5,8 @@
 <span class="badge" style="background-color: #d62728;">Outbound</span>
 
 
-    <!-- div hosting the dependency visualization -->
-    <div id="dependencyGraph"></div>
+<!-- div hosting the dependency visualization -->
+<div id="dependencyGraph"></div>
 
 
 
@@ -29,7 +29,7 @@
 
     var line = d3.svg.line.radial()
         .interpolate("bundle")
-        .tension(.95)
+        .tension(.85)
         .radius(function(d) {
             return d.y;
         })
@@ -125,7 +125,7 @@
 
     d3.select(self.frameElement).style("height", diameter + "px");
 
-    // Lazily construct the package hierarchy from class names.
+    // Lazily construct the package hierarchy 
     function packageHierarchy(classes) {
         var map = {};
 

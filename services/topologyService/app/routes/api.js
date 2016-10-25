@@ -54,7 +54,7 @@ router.get('/dependencyViewModel', function(req, res, next) {
  * It should be idempotent to GET requests with same data query params */
 router.get('/dependencyView', function(req, res, next) {
     res.setHeader('Content-Type', 'text/html');
-
+    console.log(JSON.stringify(req.header, null, 2));
     // IF ok
     if (!req.query.data) {
         res.render('emptyRequest');
@@ -62,10 +62,12 @@ router.get('/dependencyView', function(req, res, next) {
         var viewModel = convertToViewModel(req.query.data);
         if (viewModel) {
             var VISUALIZATION_TEMPLATE = 'dependencyDiagram';
-            res.render(VISUALIZATION_TEMPLATE, {
-                title: 'DependencyDiagram',
-                viewModel: viewModel
-            });
+            setTimeout(function() {
+                res.render(VISUALIZATION_TEMPLATE, {
+                    title: 'DependencyDiagram',
+                    viewModel: viewModel
+                });
+            }, 1); // we can hardcode a response delay here
         } else {
             res.render('validationError', { "input": req.query.data });
         }

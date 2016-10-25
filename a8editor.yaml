@@ -10,8 +10,9 @@
 ## A8 Control Plane (expected)
 ##
 ##          controller:8080       registry:8080     logstash:8092
-##
-##
+## 
+## Tracing
+##        zipkin:9442  elasticsearch-zipkin:9300 
 ## 
 ##
 ##
@@ -37,7 +38,7 @@ gateway:
     - logstash
     - controller
     - registry
-  container_name: gateway
+  container_name: a8editor_gateway
 
 webui:
   image: faxg/a8editor-webui:v1

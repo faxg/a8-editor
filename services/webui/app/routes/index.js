@@ -1,8 +1,15 @@
 var express = require('express');
 var moment = require('moment');
-var request = require('request');
+
+
 var _ = require('underscore');
 var util = require('util');
+
+// tracer to instrument express middleware and node-fetch to support 
+// zipkin distributed tracing
+var tracer = require('a8e-tracer');
+var rest = require('rest');
+
 
 
 var router = express.Router();
@@ -22,7 +29,7 @@ router.get('/', function(req, res, next) {
 
     res.render('index', {
         lastRendered: timestamp.format('HH:mm:ss.SSS (x)'),
-        topologyServiceEndpoint: topologyServiceEndpoint,
+        topologyServiceEndpoint,
         projectHomepage: 'https://faxg.github.io/a8-editor/'
     })
 });
@@ -38,10 +45,10 @@ var sideCarBase = 'http://localhost:6379';
 var standaloneTopologyServiceBase = 'http://localhost:3100';
 
 router.all('/proxy_to/:serviceName/:endpoint(*)', function(req, res, next) {
+
     // construct url to service (standalone) or through sidecar proxy.   
-    var url = process.env.A8E_STANDALONE ?
-        standaloneTopologyServiceBase + '/' + req.params.endpoint :
-        sideCarBase + '/' + req.params.serviceName + '/' + req.params.endpoint;
+    var url = process.env.A8E_STANDALONE ? `${standaloneTopologyServiceBase}/${req.params.endpoint}` :
+        `${sideCarBase}/${req.params.serviceName}/${req.params.endpoint}`;
 
     // somewhat tricky way to re-construct the query string (if any)
     var queryString = _.reduce(_.pairs(req.query), function(str, q, index, list) {
@@ -49,13 +56,40 @@ router.all('/proxy_to/:serviceName/:endpoint(*)', function(req, res, next) {
     }, '');
 
     url = url + queryString;
-    console.log('Proxying to microservice "' + req.params.serviceName + '"', url);
-    var forwardRequest = request(url);
-    req.pipe(forwardRequest).on('error', function(e) { handleError(e, url, forwardRequest, res, 'request') })
-        .pipe(res).on('error', function(e) { handleError(e, url, forwardRequest, res, 'response') });
+    console.log('Proxying to microservice "' + req.params.serviceName + '"');
+
+
+    // wrap rest client for tracing
+    rest =
+        tracer.createClient(req.params.serviceName);
+
+
+    rest(url)
+        .then((response) => {
+            //console.log(response);
+            return response.entity;
+        })
+        .then((body) => {
+
+            // send response 
+            res.send(body)
+        })
+        .catch(function(err) {
+            console.log(err.message);
+            next(err);
+        });;
+
+
+
 
 
 });
+
+function parseURI(url) {
+    var parser = document.createElement('a'); // dirty hack. Should use a uri parse lib instead
+    parser.href = url;
+    return parser;
+}
 
 function handleError(e, url, request, response, direction) {
     console.log(e);

@@ -19,6 +19,9 @@
 #export A8_LOG_SERVER=http://localhost:30200
 #a8ctl recipe-run --topology examples/bookinfo-topology.json --scenarios examples/bookinfo-gremlins.json --checks examples/bookinfo-checks.json --header 'Cookie' --pattern='user=jason'
 
+# clean local compiled and use dockerhub
+# docker rmi $(docker images | grep "amalgam8/" | awk "{print \$3}")
+# http://localhost:30500/app/kibana#/discover/My-A8?_g=(refreshInterval:(display:'5%20seconds',pause:!t,section:1,value:5000),time:(from:now%2Fw,mode:quick,to:now%2Fw))&_a=(columns:!(message,src,dst,upstream_response_time,gremlin_recipe_id),filters:!(),index:'*',interval:auto,query:(query_string:(analyze_wildcard:!t,query:'*')),sort:!('@timestamp',desc),uiState:(vis:(legendOpen:!f)))&indexPattern=*&type=histogram
 
 #docker rmi $(docker images -f "dangling=true" -q)
 
