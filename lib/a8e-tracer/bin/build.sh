@@ -5,10 +5,19 @@
 set -x
 SCRIPTDIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 
+mkdir -p $SCRIPTDIR/../dist/
 
-browserify $SCRIPTDIR/../browser.js > $SCRIPTDIR/../dist/a8etrace-browser.min.js
-cp $SCRIPTDIR/../recorder.js $SCRIPTDIR/../dist/
-cp $SCRIPTDIR/../tracer.js $SCRIPTDIR/../dist/
+cd $SCRIPTDIR/..
+
+#npm install
+npm run test
 
 
-cp -f $SCRIPTDIR/../dist/a8etrace-browser* $SCRIPTDIR/../../../services/webui/app/public/js-lib
+
+browserify ./browser.js > ./dist/a8etrace-browser.min.js
+cp ./recorder.js ./dist/
+cp ./tracer.js ./dist/
+
+# FIXME: webui should require instead 
+#cp -f ./dist/a8etrace-browser* ./../../services/webui/app/public/js-lib
+

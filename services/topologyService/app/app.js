@@ -39,7 +39,11 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 
 app.use('/', routes);
-app.use('/api', api);
+app.use('/api', api); // should point to "latest" 
+app.use('/api/v1', api); // this is v1 API
+//app.use('/api/v2', require('./routes/api2')); // (imaginary) v2 api. 
+
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

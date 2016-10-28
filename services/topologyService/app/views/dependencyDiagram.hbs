@@ -1,53 +1,52 @@
-
 <div id="content">
 
-<span class="badge" style="background-color: #2ca02c;">Inbound</span> &nbsp;  
-<span class="badge" style="background-color: #d62728;">Outbound</span>
+    <span class="badge" style="background-color: #2ca02c;">Inbound</span> &nbsp;
+    <span class="badge" style="background-color: #d62728;">Outbound</span>
 
 
-<!-- div hosting the dependency visualization -->
-<div id="dependencyGraph"></div>
+    <!-- div hosting the dependency visualization -->
+    <div id="dependencyGraph"></div>
 
 
 
-<script>
-    /*Based on the "Hierarchical Edge Bundling Example"
-        see https://bl.ocks.org/mbostock/7607999
-     */
-    var diameter = 480,
-        radius = diameter / 2,
-        innerRadius = radius - 120;
+    <script>
+        /* Based on the "Hierarchical Edge Bundling Example" 
+                 see https://bl.ocks.org/mbostock/7607999
+                  */
+        var diameter = 480,
+            radius = diameter / 2,
+            innerRadius = radius - 120;
 
-    var cluster = d3.layout.cluster()
-        .size([360, innerRadius])
-        .sort(null)
-        .value(function(d) {
-            return d.size;
-        });
+        var cluster = d3.layout.cluster()
+            .size([360, innerRadius])
+            .sort(null)
+            .value(function(d) {
+                return d.size;
+            });
 
-    var bundle = d3.layout.bundle();
+        var bundle = d3.layout.bundle();
 
-    var line = d3.svg.line.radial()
-        .interpolate("bundle")
-        .tension(.85)
-        .radius(function(d) {
-            return d.y;
-        })
-        .angle(function(d) {
-            return d.x / 180 * Math.PI;
-        });
+        var line = d3.svg.line.radial()
+            .interpolate("bundle")
+            .tension(.85)
+            .radius(function(d) {
+                return d.y;
+            })
+            .angle(function(d) {
+                return d.x / 180 * Math.PI;
+            });
 
-    var svg = d3.select("#dependencyGraph")
-        .append("svg")
-        .attr("width", diameter) // todo 100%
-        .attr("height", diameter)
-        .attr("viewBox","0 0 "+diameter+ " " + diameter) // for responsive resizes
-        .attr("preserveAspectRatio","xMidYMid meet") // for responsive resizes
-        .append("g")
-        .attr("transform", "translate(" + radius + "," + radius + ")");
+        var svg = d3.select("#dependencyGraph")
+            .append("svg")
+            .attr("width", diameter) // todo 100%
+            .attr("height", diameter)
+            .attr("viewBox", "0 0 " + diameter + " " + diameter) // for responsive resizes
+            .attr("preserveAspectRatio", "xMidYMid meet") // for responsive resizes
+            .append("g")
+            .attr("transform", "translate(" + radius + "," + radius + ")");
 
-    var link = svg.append("g").selectAll(".link"),
-        node = svg.append("g").selectAll(".node");
+        var link = svg.append("g").selectAll(".link"),
+            node = svg.append("g").selectAll(".node");
 
         // NOTE: data statically rendered into page
         var classes = {{{json viewModel}}};
@@ -82,99 +81,99 @@
             })
             .on("mouseover", mouseovered)
             .on("mouseout", mouseouted);
- 
 
-    function mouseovered(d) {
-        node
-            .each(function(n) {
-                n.target = n.source = false;
-            });
 
-        link
-            .classed("link--target", function(l) {
-                if (l.target === d) return l.source.source = true;
-            })
-            .classed("link--source", function(l) {
-                if (l.source === d) return l.target.target = true;
-            })
-            .filter(function(l) {
-                return l.target === d || l.source === d;
-            })
-            .each(function() {
-                this.parentNode.appendChild(this);
-            });
+        function mouseovered(d) {
+            node
+                .each(function(n) {
+                    n.target = n.source = false;
+                });
 
-        node
-            .classed("node--target", function(n) {
-                return n.target;
-            })
-            .classed("node--source", function(n) {
-                return n.source;
-            });
-    }
+            link
+                .classed("link--target", function(l) {
+                    if (l.target === d) return l.source.source = true;
+                })
+                .classed("link--source", function(l) {
+                    if (l.source === d) return l.target.target = true;
+                })
+                .filter(function(l) {
+                    return l.target === d || l.source === d;
+                })
+                .each(function() {
+                    this.parentNode.appendChild(this);
+                });
 
-    function mouseouted(d) {
-        link
-            .classed("link--target", false)
-            .classed("link--source", false);
-
-        node
-            .classed("node--target", false)
-            .classed("node--source", false);
-    }
-
-    d3.select(self.frameElement).style("height", diameter + "px");
-
-    // Lazily construct the package hierarchy 
-    function packageHierarchy(classes) {
-        var map = {};
-
-        function find(name, data) {
-            var node = map[name],
-                i;
-            if (!node) {
-                node = map[name] = data || {
-                    name: name,
-                    children: []
-                };
-                if (name.length) {
-                    node.parent = find(name.substring(0, i = name.lastIndexOf(".")));
-                    node.parent.children.push(node);
-                    node.key = name.substring(i + 1);
-                }
-            }
-            return node;
+            node
+                .classed("node--target", function(n) {
+                    return n.target;
+                })
+                .classed("node--source", function(n) {
+                    return n.source;
+                });
         }
 
-        classes.forEach(function(d) {
-            find(d.name, d);
-        });
+        function mouseouted(d) {
+            link
+                .classed("link--target", false)
+                .classed("link--source", false);
 
-        return map[""];
-    }
+            node
+                .classed("node--target", false)
+                .classed("node--source", false);
+        }
 
-    // Return a list of imports for the given array of nodes.
-    function packageImports(nodes) {
-        var map = {},
-            imports = [];
+        d3.select(self.frameElement).style("height", diameter + "px");
 
-        // Compute a map from name to node.
-        nodes.forEach(function(d) {
-            map[d.name] = d;
-        });
+        // Lazily construct the package hierarchy 
+        function packageHierarchy(classes) {
+            var map = {};
 
-        // For each import, construct a link from the source to target node.
-        nodes.forEach(function(d) {
-            if (d.imports) d.imports.forEach(function(i) {
-                imports.push({
-                    source: map[d.name],
-                    target: map[i]
+            function find(name, data) {
+                var node = map[name],
+                    i;
+                if (!node) {
+                    node = map[name] = data || {
+                        name: name,
+                        children: []
+                    };
+                    if (name.length) {
+                        node.parent = find(name.substring(0, i = name.lastIndexOf(".")));
+                        node.parent.children.push(node);
+                        node.key = name.substring(i + 1);
+                    }
+                }
+                return node;
+            }
+
+            classes.forEach(function(d) {
+                find(d.name, d);
+            });
+
+            return map[""];
+        }
+
+        // Return a list of imports for the given array of nodes.
+        function packageImports(nodes) {
+            var map = {},
+                imports = [];
+
+            // Compute a map from name to node.
+            nodes.forEach(function(d) {
+                map[d.name] = d;
+            });
+
+            // For each import, construct a link from the source to target node.
+            nodes.forEach(function(d) {
+                if (d.imports) d.imports.forEach(function(i) {
+                    imports.push({
+                        source: map[d.name],
+                        target: map[i]
+                    });
                 });
             });
-        });
 
-        return imports;
-    }
-</script>
+            return imports;
+        }
+    </script>
 
 </div>

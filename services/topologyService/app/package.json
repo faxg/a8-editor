@@ -1,23 +1,25 @@
 {
   "name": "topologyService",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "private": true,
   "scripts": {
     "start": "node ./bin/www"
   },
   "dependencies": {
+    "a8e-tracer": ">=0.1.2",
     "body-parser": "~1.15.1",
     "cookie-parser": "~1.4.3",
     "debug": "~2.2.0",
     "express": "~4.13.4",
     "hbs": "~4.0.0",
-    "moment": "^2.15.1",
+    "moment": "^2.15.2",
     "morgan": "~1.7.0",
     "serve-favicon": "~2.3.0",
-    "underscore": "^1.8.3",
-    "zipkin": "^0.2.7",
-    "zipkin-context-cls": "^0.2.1",
-    "zipkin-instrumentation-express": "^0.2.7",
-    "zipkin-transport-http": "^0.2.7"
+    "underscore": "^1.8.3"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "chimp": "^0.41.1",
+    "mocha": "^3.1.0"
   }
 }

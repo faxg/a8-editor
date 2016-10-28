@@ -1,71 +1,98 @@
-# Copyright 2016 IBM Corporation
-#
-#   Licensed under the Apache License, Version 2.0 (the "License");
-#   you may not use this file except in compliance with the License.
-#   You may obtain a copy of the License at
-#
-#       http://www.apache.org/licenses/LICENSE-2.0
-#
-#   Unless required by applicable law or agreed to in writing, software
-#   distributed under the License is distributed on an "AS IS" BASIS,
-#   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-#   See the License for the specific language governing permissions and
-#   limitations under the License.
 
+version: '2'
+services:
 ##########ELK Stack##############
-es:
-  image: elasticsearch
-  ports:
-    - 9300
-    - "30200:9200"
-  container_name: elasticsearch
-logstash:
-  image: logstash
-  command: logstash --verbose -e "input { beats {codec=>'json' port=>8092}} output {elasticsearch {hosts =>'es:9200' codec=>'json'} }"
-  ports:
-    - "8092:8092"
-  links:
-    - es
-  container_name: logstash
-kibana:
-  image: kibana
-  links:
-    - es
-  environment:
-    - ELASTICSEARCH_URL=http://es:9200
-  ports:
-    - "30500:5601"
-  container_name: kibana
+  es:
+    image: elasticsearch
+    container_name: elasticsearch
+    ports:
+      - 9300
+      - "30200:9200"
+
+  logstash:
+    image: logstash
+    container_name: logstash
+    command: logstash --verbose -e "input { beats {codec=>'json' port=>8092}} output {elasticsearch {hosts =>'es:9200' codec=>'json'} }"
+    ports:
+      - "8092:8092"
+    links:
+      - es
+
+  kibana:
+    image: kibana
+    container_name: kibana
+    links:
+      - es
+    environment:
+      - ELASTICSEARCH_URL=http://es:9200
+    ports:
+      - "30500:5601"
+
 
 #######Service Registry###########
+  registry:
+    image: amalgam8/a8-registry
+    container_name: registry
+    ports:
+      - "31300:8080"
+    environment:
+      - A8_STORE=redis
+      - A8_STORE_ADDRESS=redis:6379
+    links:
+      - redis
 
-registry:
-  image: amalgam8/a8-registry
-  ports:
-    - "31300:8080"
-  container_name: registry
-  environment:
-    - A8_STORE=redis
-    - A8_STORE_ADDRESS=redis:6379
-  links:
-    - redis
 
-controller:
-  image: amalgam8/a8-controller
-  ports:
-    - "31200:8080"
-  environment:
-    - A8_LOG_LEVEL=info
-    - A8_DATABASE_TYPE=redis
-    - A8_DATABASE_HOST=redis://redis:6379
-  links:
-    - redis
-  container_name: controller
+  controller:
+    image: amalgam8/a8-controller
+    container_name: controller
+    ports:
+      - "31200:8080"
+    environment:
+      - A8_LOG_LEVEL=info
+      - A8_DATABASE_TYPE=redis
+      - A8_DATABASE_HOST=redis://redis:6379
+    links:
+      - redis
+
 
 #######Redis Backend###########
+  redis:
+    image: redis:alpine
+    container_name: redis
+    ports:
+      - "31400:6379"
 
-redis:
-  image: redis:alpine
-  ports:
-    - "31400:6379"
-  container_name: redis
+
+
+
+
+  zipkin_storage:
+    image: openzipkin/zipkin-mysql:1.13.0
+    container_name: mysql
+    ports:
+      - 3306:3306
+
+  zipkin:
+    image: openzipkin/zipkin:1.13.0
+    container_name: zipkin
+    # Environment settings are defined here https://github.com/openzipkin/zipkin/tree/1.13.0/zipkin-server#environment-variables
+    environment:
+      - STORAGE_TYPE=mysql
+      - MYSQL_HOST=mysql
+    ports:
+      - "9411:9411"
+    depends_on:
+      - zipkin_storage
+
+
+  dependencies:
+    image: openzipkin/zipkin-dependencies
+    container_name: dependencies
+    entrypoint: crond -f
+    environment:
+      - STORAGE_TYPE=mysql
+      - MYSQL_HOST=mysql
+      - MYSQL_USER=zipkin
+      - MYSQL_PASS=zipkin
+    depends_on:
+      - zipkin_storage

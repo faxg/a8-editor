@@ -5,12 +5,12 @@ Feature: Load the home page
   So I can start using the A8 Editor
 
   Scenario: Find "Scenarios" in navigation menu
-    When I open "http://localhost:3000/"
+    When I open "http://localhost:7000/"
     Then there is a navigation menu item for "Scenarios"
 
 
   Scenario: Open the "General" tab in Scenario view and make sure we can enter a recipe name (which then gets sanitized) and some short description 
-    When I open "http://localhost:3000/"
+    When I open "http://localhost:7000/"
     And I click on "Scenarios"
     And I click on "General"
     Then I can set the input text for "Recipe Name" to "Automated Test Recipe !"

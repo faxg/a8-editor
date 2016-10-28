@@ -27,7 +27,7 @@ module.exports = function() {
      * Clicks on a <button> given the label (= text content)
      */
     this.When('I click the button "$btnLabel"', function(btnLabel) {
-        var selector = 'button=' + btnLabel;
+        var selector = `button=${btnLabel}`;
         browser.waitForExist(selector);
         browser.element(selector).click();
     });
@@ -65,10 +65,10 @@ module.exports = function() {
 
     /**
      * This checks if the named source code editor will be visible within a given timeframe.
-     * Note naming convention for the pre tag hosting the editor: <pre id="editor<EDITOR_NAME>">
+     * Note naming convention for the pre tag hosting the editor: <div id="editor<EDITOR_NAME>">
      */
     this.Then('I can see the source editor for "$editorName" within $timeout seconds', function(editorName, timeout) {
-        browser.waitForVisible('//pre[@id="editor' + editorName + '"]', timeout);
+        browser.waitForVisible('//div[@id="editor' + editorName + '"]', timeout);
 
     });
 

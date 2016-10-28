@@ -34,6 +34,14 @@ router.get('/', function(req, res, next) {
     })
 });
 
+// health check. Sidecar expects http 200 on poll, or will unregister
+router.get('/health', function(req, res, next) {
+    var timestamp = moment();
+    res.status(200).send({
+        "status": "ok",
+        "checked": timestamp.format('HH:mm:ss.SSS')
+    });
+});
 
 
 /** 

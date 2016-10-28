@@ -16,70 +16,49 @@
 ## 
 ##
 ##
-##
-##
-##
-##
+version: '2'
 
-gateway:
-  image: amalgam8/a8-sidecar:alpine
-  environment:
-    - A8_CONTROLLER_URL=http://controller:8080
-    - A8_REGISTRY_URL=http://registry:8080
-    - A8_PROXY=true
-    - A8_LOG=true
-    - A8_SERVICE=gateway
-    - A8_LOGSTASH_SERVER='logstash:8092'
-    - A8_CONTROLLER_POLL=5s
-    - A8_REGISTRY_POLL=5s
-  ports:
-    - "32700:6379"
-  external_links:
-    - logstash
-    - controller
-    - registry
-  container_name: a8editor_gateway
-
-webui:
-  image: faxg/a8editor-webui:v1
-  environment:
-    - A8_LOG=true
-    - A8_REGISTER=true
-    - A8_PROXY=true
-    - A8_REGISTRY_URL=http://registry:8080
-    - A8_SERVICE=webui:v1
-    - A8_ENDPOINT_PORT=9080
-    - A8_LOGSTASH_SERVER='logstash:8092'
-    - A8_CONTROLLER_URL=http://controller:8080
-    - A8_CONTROLLER_POLL=5s
-    - A8_REGISTRY_POLL=5s
-  external_links:
-    - logstash
-    - controller
-    - registry
-  ports:
-    - "7000:3000"
-    - "6379:6379"
-  container_name: webui
+services:
 
 
-topologyservice:
-  image: faxg/a8editor-topologyservice:v1
-  environment:
-    - A8_LOG=true
-    - A8_REGISTER=true
-    - A8_PROXY=true
-    - A8_REGISTRY_URL=http://registry:8080
-    - A8_SERVICE=topologyservice:v1
-    - A8_ENDPOINT_PORT=9080
-    - A8_LOGSTASH_SERVER='logstash:8092'
-    - A8_CONTROLLER_URL=http://controller:8080
-    - A8_CONTROLLER_POLL=5s
-    - A8_REGISTRY_POLL=5s
-  external_links:
-    - logstash
-    - controller
-    - registry
-  ports:
-    - "7100:3000"
-  container_name: topologyservice
+  gateway:
+    image: amalgam8/a8-sidecar:alpine
+    container_name: a8editor_gateway
+    env_file: a8editor.env
+    environment:
+      - A8_SERVICE=gateway
+      - A8_REGISTER=false
+    ports:
+      - "32700:6379"
+    external_links:
+      - logstash
+      - controller
+      - registry
+
+  webui:
+    image: faxg/a8editor-webui:v1
+    env_file: a8editor.env
+    environment:
+      - A8_SERVICE=webui:v1
+    external_links:
+      - logstash
+      - controller
+      - registry
+    ports:
+      - "7000:3000"
+      - "6379:6379"
+    container_name: webui
+
+
+  topologyservice:
+    image: faxg/a8editor-topologyservice:v1
+    env_file: a8editor.env
+    environment:
+      - A8_SERVICE=topologyservice:v1
+    external_links:
+      - logstash
+      - controller
+      - registry
+    ports:
+      - "7100:3100"
+    container_name: topologyservice

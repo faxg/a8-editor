@@ -5,7 +5,7 @@ Feature: Load the A8 bookstore example recipe
   So I can see the JSON source and visualization
 
   Scenario: Load example bookstore artifacts
-    When I open "http://localhost:3000"
+    When I open "http://localhost:7000"
     And I click the button "Load template..."
     And I click on "Topology"
     Then I can see the source editor for "Topology" within 1 seconds

@@ -9,16 +9,14 @@
     "test-integration": "./node_modules/.bin/chimp"
   },
   "dependencies": {
-    "a8e-tracer": "^0.1.0",
+    "a8e-tracer": ">=0.1.2",
     "body-parser": "~1.15.1",
     "cookie-parser": "~1.4.3",
     "debug": "~2.2.0",
     "express": "^4.13.4",
     "hbs": "~4.0.0",
-    "jsoneditor": "^5.5.9",
-    "moment": "^2.14.1",
+    "moment": "^2.15.2",
     "morgan": "~1.7.0",
-    "node-fetch": "^1.6.3",
     "request": "^2.74.0",
     "rest": "^2.0.0",
     "serve-favicon": "~2.3.0",

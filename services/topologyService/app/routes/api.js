@@ -14,8 +14,15 @@ function convertToViewModel(topologyJsonData) {
     var viewModel = new Array();
     console.log(topologyJsonData);
     try {
+        // 1. is it valid json data?
+        // 2. valid to viewmodel schema? (call out to validation service)
+        // 3. convertIt
+        try {
+            var sourceData = JSON.parse(topologyJsonData);
 
-        var sourceData = JSON.parse(topologyJsonData);
+        } catch (e) {
+            return
+        }
 
 
         // get all services (incl. version tags)
@@ -54,14 +61,17 @@ router.get('/dependencyViewModel', function(req, res, next) {
  * It should be idempotent to GET requests with same data query params */
 router.get('/dependencyView', function(req, res, next) {
     res.setHeader('Content-Type', 'text/html');
-    console.log(JSON.stringify(req.header, null, 2));
+    //console.log(JSON.stringify(req.header, null, 2));
     // IF ok
     if (!req.query.data) {
         res.render('emptyRequest');
     } else {
         var viewModel = convertToViewModel(req.query.data);
+
         if (viewModel) {
+            // TODO: FeatureToggle 'DebugInfo'
             var VISUALIZATION_TEMPLATE = 'dependencyDiagram';
+
             setTimeout(function() {
                 res.render(VISUALIZATION_TEMPLATE, {
                     title: 'DependencyDiagram',

@@ -1,12 +1,12 @@
 {
     "name": "a8e-tracer",
-    "version": "0.1.0",
+    "version": "0.1.2",
     "description": "A simple module to instrument express middleware rest clients for zipkin tracing",
     "main": "dist/tracer.js",
     "scripts": {
         "prepublish": "npm run clean && npm run build",
         "build": "./bin/build.sh",
-        "clean": "rm -r dist/*",
+        "clean": "rm -rf dist/*",
         "test": "npm run test-unittest",
         "test-unittest": "./node_modules/mocha/bin/mocha ./test"
     },
