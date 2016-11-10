@@ -1,0 +1,21 @@
+{
+    "checks": [{
+            "name": "bounded_response_time",
+            "source": "a8e_gateway",
+            "dest": "webui:v1",
+            "max_latency": "2s"
+        },
+        {
+            "name": "http_status",
+            "source": "a8e_gateway",
+            "dest": "webui:v1",
+            "status": [200, 302]
+        },
+        {
+            "name": "http_status",
+            "source": "webui:v1",
+            "dest": "topologyservice:v2",
+            "status": [503, 504]
+        }
+    ]
+}

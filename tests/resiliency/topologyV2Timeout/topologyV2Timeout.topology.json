@@ -1,0 +1,24 @@
+{
+    "services": [{
+            "name": "a8e_gateway"
+        },
+        {
+            "name": "webui:v1"
+        },
+        {
+            "name": "topologyservice:v1"
+        },
+        {
+            "name": "topologyservice:v2"
+        }
+    ],
+    "dependencies": {
+        "a8e_gateway": [
+            "webui:v1"
+        ],
+        "webui": [
+            "topologyservice:v1",
+            "topologyservice:v2"
+        ]
+    }
+}

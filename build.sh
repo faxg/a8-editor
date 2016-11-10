@@ -22,6 +22,6 @@ cd $SCRIPTDIR/services/topologyService
 cd app && npm install && cd ..
 docker build -t faxg/a8editor-topologyservice:v1 .
 ## v2
-#cd $SCRIPTDIR/services/topologyService
-#cd app && npm install && cd ..
-#docker build --file $SCRIPTDIR/services/topologyService-v2/Dockerfile -t faxg/a8editor-topologyservice:v2 "$SCRIPTDIR/services/topologyService-v2"
+cd $SCRIPTDIR/services/topologyService-v2
+cd app && npm install && cd ..
+docker build --file $SCRIPTDIR/services/topologyService-v2/Dockerfile -t faxg/a8editor-topologyservice:v2 "$SCRIPTDIR/services/topologyService-v2"

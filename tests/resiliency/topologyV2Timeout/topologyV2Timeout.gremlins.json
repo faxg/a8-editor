@@ -1,0 +1,8 @@
+{
+    "gremlins": [{
+        "scenario": "delay_requests",
+        "source": "webui:v1",
+        "dest": "topolgyservice:v2",
+        "delaytime": "10s"
+    }]
+}
