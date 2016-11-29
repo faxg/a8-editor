@@ -1,0 +1,16 @@
+{
+    "nodes": [
+        { "id": "gateway", "group": 1 },
+        { "id": "webui:v1", "group": 2 },
+        { "id": "topology:v1", "group": 3 },
+        { "id": "topology:v2", "group": 3 },
+        { "id": "validation:v1", "group": 4 }
+    ],
+    "links": [
+        { "source": "gateway", "target": "webui:v1", "value": 1 },
+        { "source": "webui:v1", "target": "topology:v1", "value": 1 },
+        { "source": "webui:v1", "target": "topology:v2", "value": 2 },
+        { "source": "topology:v1", "target": "validation:v1", "value": 1 },
+        { "source": "topology:v2", "target": "validation:v1", "value": 1 }
+    ]
+}

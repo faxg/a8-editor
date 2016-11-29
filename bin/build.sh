@@ -4,6 +4,7 @@
 set -x
 SCRIPTDIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 
+SCRIPTDIR=$SCRIPTDIR/..
 #################################################################################
 # Build the webui image
 #################################################################################
@@ -25,3 +26,9 @@ docker build -t faxg/a8editor-topologyservice:v1 .
 cd $SCRIPTDIR/services/topologyService-v2
 cd app && npm install && cd ..
 docker build --file $SCRIPTDIR/services/topologyService-v2/Dockerfile -t faxg/a8editor-topologyservice:v2 "$SCRIPTDIR/services/topologyService-v2"
+
+
+#################################################################################
+# Build the validation image
+#################################################################################
+## v1

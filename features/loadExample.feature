@@ -9,4 +9,4 @@ Feature: Graphical visualization of service dependencies
     And I click the button "Load template..."
     And I click on "Topology"
     Then I can see the source editor for "Topology" within 1 seconds
-    And I see an "Dependency" visualization within 2 seconds
+    And I see a "dependency" visualization within 2 seconds

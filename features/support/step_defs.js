@@ -72,6 +72,9 @@ module.exports = function() {
 
     });
 
+    this.Then('I see a "$visualization" visualization within $timeout seconds', function(visualization, timeout) {
+        browser.waitForVisible(`//div[@id="${visualization}ViewContainer"]`, timeout);
+    });
 
 
 
